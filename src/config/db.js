@@ -1,25 +1,37 @@
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 
-let connection;
+let pool;
 
-function getDbConnection() {
-  if (!connection) {
-    connection = mysql.createConnection({
+async function initDb() {
+  if (!pool) {
+    pool = mysql.createPool({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD || "",
+      password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      port: process.env.DB_PORT || 3306,
-    });
-
-    connection.connect((err) => {
-      if (err) {
-        console.error("MySQL connection error - ", err);
-        return;
-      }
+      port: process.env.DB_PORT,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
     });
   }
-  return connection;
+
+  return pool;
 }
 
-module.exports = getDbConnection();
+module.exports = {
+  getPool: async () => {
+    if (!pool) {
+      await initDb();
+    }
+    return pool;
+  },
+  getConnection: async () => {
+    const activePool = await module.exports.getPool();
+    return await activePool.getConnection();
+  },
+  query: async (...args) => {
+    const activePool = await module.exports.getPool();
+    return activePool.query(...args);
+  },
+};
