@@ -1,0 +1,29 @@
+{
+  "name": "mvc_order",
+  "version": "1.0.0",
+  "description": "mvc order api",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawaljain/mvc_order.git"
+  },
+  "author": "Kawal Jain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kawaljain/mvc_order/issues"
+  },
+  "homepage": "https://github.com/kawaljain/mvc_order#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
